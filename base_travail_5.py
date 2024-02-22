@@ -4,6 +4,8 @@ import random
 from labyrinthe import Labyrinthe
 from grid import Grid
 from utils import Pos
+from read_colors import read_color_parameters
+
 # pygame setup
 pygame.init()
 
@@ -13,14 +15,14 @@ size = (15, 20) # taille du monde
 fps = 30 # fps du jeu
 player_speed = 300 # vitesse du joueur
 next_move = 0 #tic avant déplacement
+score = 0
+font = pygame.font.Font('freesansbold.ttf', 20)
+font2 = pygame.font.Font('freesansbold.ttf', 50)
 
 # color
-color = {
-    "ground_color" : "#EDDACF",
-    "grid_color" : "#7F513D",
-    "player_color" : "#9F715D",
-    "wall_color" : "#000000"
-}
+read = read_color_parameters()
+read.readColors("color.ini")
+color = read.c
 
 level = "data/laby-01.dat"
 
@@ -111,7 +113,10 @@ while running:
     if show_grid:
         grid.draw(screen)
 
-    pygame.draw.rect(screen, color["player_color"], pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
+    # Dessiner le joueur (cercle)
+    player_radius = tilesize // 2  # Le rayon du cercle est la moitié de la taille d'une tuile
+    player_center = (player_pos.x * tilesize + player_radius, player_pos.y * tilesize + player_radius)
+    pygame.draw.circle(screen, color["player_color"], player_center, player_radius)
 
     # affichage des modification du screen_view
     pygame.display.flip()
