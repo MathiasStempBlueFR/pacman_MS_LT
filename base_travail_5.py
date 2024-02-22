@@ -11,7 +11,7 @@ pygame.init()
 tilesize = 32 # taille d'une tuile IG
 size = (20, 10) # taille du monde
 fps = 30 # fps du jeu
-player_speed = 150 # vitesse du joueur
+player_speed = 300 # vitesse du joueur
 next_move = 0 #tic avant déplacement
 
 # color
@@ -42,6 +42,7 @@ show_pos = False
 keys= { "UP":0 , "DOWN":0, "LEFT":0, "RIGHT":0 }
 
 player_pos = Pos(0,1)
+direction_player = (-1, 0)
 
 #tour de boucle, pour chaque FPS
 while running:
@@ -56,28 +57,15 @@ while running:
             running = False
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z or event.key == pygame.K_UP:
-                keys['UP'] = 1
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                keys['DOWN'] = 1
-            if event.key == pygame.K_q or event.key == pygame.K_LEFT:
-                keys['LEFT'] = 1
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                keys['RIGHT'] = 1
+            if event.key == pygame.K_z:
+                direction_player = (0, -1)
+            if event.key == pygame.K_s:
+                direction_player = (0, 1)
+            if event.key == pygame.K_q:
+                direction_player = (-1, 0)
+            if event.key == pygame.K_d:
+                direction_player = (1, 0)
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_z or event.key == pygame.K_UP:
-                keys['UP'] = 0
-                next_move =1
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                keys['DOWN'] = 0
-                next_move =1
-            if event.key == pygame.K_q or event.key == pygame.K_LEFT:
-                keys['LEFT'] = 0
-                next_move =1
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                keys['RIGHT'] = 0
-                next_move =1
 
             if event.key == pygame.K_ESCAPE:
                 running = False
@@ -95,15 +83,15 @@ while running:
     #
 
     next_move += dt
-    if next_move>0:
+    if next_move> 1000 / fps:
         new_x, new_y = player_pos.x, player_pos.y
-        if keys['UP'] == 1:
+        if direction_player == (0, -1):
             new_y -=1
-        elif keys['DOWN'] == 1:
+        elif direction_player == (0, 1):
             new_y += 1
-        elif keys['LEFT'] == 1:
+        elif direction_player == (-1, 0):
             new_x -=1
-        elif keys['RIGHT'] == 1:
+        elif direction_player == (1, 0):
             new_x += 1
 
         # vérification du déplacement du joueur                                    
