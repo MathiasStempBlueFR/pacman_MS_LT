@@ -5,6 +5,8 @@ from labyrinthe import Labyrinthe
 from grid import Grid
 from utils import Pos
 from read_colors import read_color_parameters
+from item import item
+from ghost import ghost
 
 # pygame setup
 pygame.init()
@@ -18,6 +20,8 @@ next_move = 0 #tic avant déplacement
 score = 0
 font = pygame.font.Font('freesansbold.ttf', 20)
 font2 = pygame.font.Font('freesansbold.ttf', 50)
+offsetX = 0
+offsetY = 0
 
 # color
 read = read_color_parameters()
@@ -42,9 +46,15 @@ show_grid = True
 show_pos = False
 
 keys= { "UP":0 , "DOWN":0, "LEFT":0, "RIGHT":0 }
+ghost_direction = random.choice(['UP', 'Down', 'LEFT', 'RIGHT'])
 
 player_pos = Pos(7,7)
 direction_player = (0, 0)
+items = item(tilesize, color["item_color"])
+items.change_origin(offsetX, offsetY)
+ghosts = ghost(tilesize, color["ghost_color"])
+ghost_move_counter = 0
+ghosts.change_origin(offsetX, offsetY)
 
 #tour de boucle, pour chaque FPS
 while running:
@@ -68,6 +78,16 @@ while running:
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 direction_player = (1, 0)
 
+            #déplacement des ghosts
+            ghosts.update_position(laby)
+            #collision avec ghost
+            ghosts.check_collision_with_player(player_pos)
+            
+            ghost_move_counter += 1
+            if ghost_move_counter >= 3:
+                ghost_direction = random.choice(['UP', 'DOWN', 'LEFT', 'RIGHT'])
+                ghost_move_counter = 0
+            
 
             if event.key == pygame.K_ESCAPE:
                 running = False
@@ -100,6 +120,9 @@ while running:
             player_pos.x, player_pos.y = new_x, new_y
             next_move -= player_speed
 
+        if items.get_item(player_pos.x, player_pos.y):
+            print("Miam!")
+
         if show_pos:
             print("pos: ",player_pos)
 
@@ -108,6 +131,8 @@ while running:
     #
     screen.fill(color["ground_color"])
 
+    items.draw(screen)
+    ghosts.draw(screen)
     laby.draw(screen, tilesize)
 
     if show_grid:
