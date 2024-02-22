@@ -57,13 +57,13 @@ while running:
             running = False
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z:
+            if event.key == pygame.K_z or event.key == pygame.K_UP:
                 direction_player = (0, -1)
-            if event.key == pygame.K_s:
+            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 direction_player = (0, 1)
-            if event.key == pygame.K_q:
+            if event.key == pygame.K_q or event.key == pygame.K_LEFT:
                 direction_player = (-1, 0)
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 direction_player = (1, 0)
 
 
