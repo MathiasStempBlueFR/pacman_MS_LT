@@ -9,7 +9,7 @@ pygame.init()
 
 #constantes
 tilesize = 32 # taille d'une tuile IG
-size = (20, 10) # taille du monde
+size = (15, 20) # taille du monde
 fps = 30 # fps du jeu
 player_speed = 300 # vitesse du joueur
 next_move = 0 #tic avant déplacement
@@ -22,13 +22,13 @@ color = {
     "wall_color" : "#000000"
 }
 
-level = "data/laby-02.dat"
+level = "data/laby-01.dat"
 
 laby = Labyrinthe(size[0], size[1])
 laby.load_from_file(level)
 laby.set_color(color["wall_color"])
 
-grid = Grid(size[0], size[1],tilesize)
+grid = Grid(size[1], size[1],tilesize)
 grid.set_color(color["grid_color"])
 
 screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
@@ -41,8 +41,8 @@ show_pos = False
 
 keys= { "UP":0 , "DOWN":0, "LEFT":0, "RIGHT":0 }
 
-player_pos = Pos(0,1)
-direction_player = (-1, 0)
+player_pos = Pos(7,7)
+direction_player = (0, 0)
 
 #tour de boucle, pour chaque FPS
 while running:
@@ -73,7 +73,6 @@ while running:
                 show_grid = not show_grid
             if event.key == pygame.K_p:
                 show_pos = not show_pos
-        
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             print("mouse_pos:", pos)
